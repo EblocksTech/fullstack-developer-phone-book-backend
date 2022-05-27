@@ -39,8 +39,12 @@ namespace absa.phonebook.api.Data.Models
 
         /// <summary>
         ///     Gets or sets a <see cref="Phonebook"/> that the entry belongs to.
-        /// </summary>
-        [DataMember(Name = "phonebook")]
+        /// </summary>        
         public Phonebook Phonebook { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a <see cref="Guid"/> that the entry belongs to.
+        /// </summary>        
+        public Guid PhonebookId { get; set; }
     }
 }

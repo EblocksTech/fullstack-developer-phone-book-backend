@@ -35,8 +35,11 @@ namespace absa.phonebook.api.Data
 
         /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);         
+        {            
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Phonebook>().HasData(SeedData.SeedPhonebook());
+            modelBuilder.Entity<Entry>().HasData(SeedData.SeedEntries());
         }
     }
 }

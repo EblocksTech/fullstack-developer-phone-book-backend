@@ -31,7 +31,7 @@ namespace absa.phonebook.api.Migrations
                     b.Property<string>("Number")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("PhonebookId")
+                    b.Property<Guid>("PhonebookId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -39,6 +39,29 @@ namespace absa.phonebook.api.Migrations
                     b.HasIndex("PhonebookId");
 
                     b.ToTable("Entries");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("25f097a4-ac24-40f7-9af5-150173cddfa9"),
+                            Name = "Mom",
+                            Number = "081-704-6758",
+                            PhonebookId = new Guid("dca21998-eeab-4291-aae2-44a7b5e8ff03")
+                        },
+                        new
+                        {
+                            Id = new Guid("02ec8615-8a3a-4dae-a1a5-7ffdbf2312df"),
+                            Name = "Dad",
+                            Number = "081-365-8532",
+                            PhonebookId = new Guid("dca21998-eeab-4291-aae2-44a7b5e8ff03")
+                        },
+                        new
+                        {
+                            Id = new Guid("6d19c635-0530-4868-a69b-5d40617057ad"),
+                            Name = "Mr D",
+                            Number = "011-342-1720",
+                            PhonebookId = new Guid("dca21998-eeab-4291-aae2-44a7b5e8ff03")
+                        });
                 });
 
             modelBuilder.Entity("absa.phonebook.api.Data.Models.Phonebook", b =>
@@ -53,15 +76,29 @@ namespace absa.phonebook.api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Phonebooks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("dca21998-eeab-4291-aae2-44a7b5e8ff03"),
+                            Name = "General"
+                        });
                 });
 
             modelBuilder.Entity("absa.phonebook.api.Data.Models.Entry", b =>
                 {
                     b.HasOne("absa.phonebook.api.Data.Models.Phonebook", "Phonebook")
-                        .WithMany()
-                        .HasForeignKey("PhonebookId");
+                        .WithMany("Entries")
+                        .HasForeignKey("PhonebookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Phonebook");
+                });
+
+            modelBuilder.Entity("absa.phonebook.api.Data.Models.Phonebook", b =>
+                {
+                    b.Navigation("Entries");
                 });
 #pragma warning restore 612, 618
         }

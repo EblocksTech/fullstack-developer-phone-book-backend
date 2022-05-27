@@ -21,7 +21,7 @@ namespace absa.phonebook.api.Data.Models
         [Required]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [DataMember(Name = "id")]        
+        [DataMember(Name = "id")]
         public Guid Id { get; set; }
 
 
@@ -30,5 +30,10 @@ namespace absa.phonebook.api.Data.Models
         /// </summary>
         [DataMember(Name = "name")]
         public String Name { get; set; }
+
+        /// <summary>
+        ///     Gets or sets <see cref="ICollection{Entry}"/> representing the phonebook entries.
+        /// </summary>
+        public ICollection<Entry> Entries { get; set; }
     }
 }
