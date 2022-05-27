@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using absa.phonebook.api.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +34,10 @@ namespace absa.phonebook.api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "absa.phonebook.api", Version = "v1" });
             });
+
+            var connectionString = Configuration["ConnectionStrings:Postgres"];
+
+            services.AddDbContext<PhonebookContext>(options => options.UseNpgsql(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +60,25 @@ namespace absa.phonebook.api
             {
                 endpoints.MapControllers();
             });
+
+            UpdateDatabase(app);
+        }
+
+        /// <summary>
+        ///     Updates the database with the latest migrations.
+        /// </summary>
+        /// <param name="app">A <see cref="IApplicationBuilder"/> representing the application builder.</param>
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<PhonebookContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }
