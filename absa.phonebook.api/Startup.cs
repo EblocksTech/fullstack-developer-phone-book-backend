@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using absa.phonebook.api.Data;
+using absa.phonebook.api.Sevices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,6 +39,7 @@ namespace absa.phonebook.api
             var connectionString = Configuration["ConnectionStrings:Postgres"];
 
             services.AddDbContext<PhonebookContext>(options => options.UseNpgsql(connectionString));
+            services.AddTransient<IPhonebookService, PhonebookService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
