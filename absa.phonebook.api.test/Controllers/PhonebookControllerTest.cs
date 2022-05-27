@@ -1,4 +1,5 @@
 ﻿using absa.phonebook.api.Controllers;
+using absa.phonebook.api.Data.Dtos;
 using absa.phonebook.api.Data.Models;
 using absa.phonebook.api.Sevices;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ namespace absa.phonebook.api.test.Controllers
         ///     The following test checks if a list of phonebooks are returned succesfully.
         /// </summary>
         [Fact]
-        public async Task PhonebookController_Return_List_Of_Phonebooks()
+        public async Task GetPhonebooks_Should_Return_List_Of_Phonebooks()
         {
             // Arrange 
             var list = new List<Phonebook>() 
@@ -70,6 +71,36 @@ namespace absa.phonebook.api.test.Controllers
             // Assert
             Assert.IsType<OkObjectResult>(result);
             Assert.Equal(3, value.Count);
+        }
+
+
+        /// <summary>
+        ///     The following test checks if a phonebooks was created successfully.
+        /// </summary>        
+        [Fact]
+        public async Task CreatePhonebook_Should_Create_New_Phonebook()
+        {
+            // Arrange
+            _phonebookServiceMock.Setup(x => x.CreatePhonebook(It.IsAny<Phonebook>())).ReturnsAsync(true);
+
+            // Act 
+            var result = await _controller.CreatePhonebook(new PhonebookDto()) as NoContentResult;
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task CreatePhonebook_Should_Fail_When_Phonebok_With_Same_Name_Already_Exists()
+        {
+            // Arrange
+            _phonebookServiceMock.Setup(x => x.CreatePhonebook(It.IsAny<Phonebook>())).ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.CreatePhonebook(new PhonebookDto()) as BadRequestResult;
+
+            // Assert
+            Assert.IsType<BadRequestResult>(result);
         }
     }
 }

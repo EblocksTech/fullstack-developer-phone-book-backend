@@ -16,6 +16,17 @@ namespace absa.phonebook.api.Sevices
         /// </summary>
         /// <returns></returns>
         public Task<List<Phonebook>> GetPhonebooks();
+
+        /// <summary>
+        ///     Provides a method that creates a new phonebook.
+        /// </summary>
+        /// <param name="phonebook">
+        ///     A <see cref="Phonebook"/> that represents the phonebook to be created.
+        /// </param>
+        /// <returns>
+        ///     a <see cref="bool"/> that represents whether the operation was a success or not.
+        /// </returns>
+        public Task<bool> CreatePhonebook(Phonebook phonebook);
         
     }
 }
