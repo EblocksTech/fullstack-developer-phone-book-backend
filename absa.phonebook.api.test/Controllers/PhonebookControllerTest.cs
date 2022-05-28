@@ -18,20 +18,21 @@ namespace absa.phonebook.api.test.Controllers
     public class PhonebookControllerTest
     {
         /// <summary>
-        ///     <see cref="PhonebookController"/> representing the subject under test. 
+        ///     A <see cref="PhonebookController"/> representing the subject under test. 
         /// </summary>
         private readonly PhonebookController _controller;
 
         /// <summary>
         ///      A <see cref="Mock"/> implementation of <see cref="IPhonebookService"/>
         /// </summary>
-        private readonly Mock<IPhonebookService> _phonebookServiceMock = new Mock<IPhonebookService>();
+        private readonly Mock<IPhonebookService> _phonebookServiceMock;
         
         /// <summary>
         ///     Initialise an  instance of the <see cref="PhonebookControllerTest"/> class.
         /// </summary>
         public PhonebookControllerTest()
         {
+            _phonebookServiceMock = new Mock<IPhonebookService>();
             _controller = new PhonebookController(_phonebookServiceMock.Object);
         }
 
@@ -81,17 +82,25 @@ namespace absa.phonebook.api.test.Controllers
         public async Task CreatePhonebook_Should_Create_New_Phonebook()
         {
             // Arrange
+            var dto = new PhonebookDto()
+            {
+                Name = "General"
+            };
+
             _phonebookServiceMock.Setup(x => x.CreatePhonebook(It.IsAny<Phonebook>())).ReturnsAsync(true);
 
             // Act 
-            var result = await _controller.CreatePhonebook(new PhonebookDto()) as NoContentResult;
+            var result = await _controller.CreatePhonebook(dto) as NoContentResult;
 
             // Assert
             Assert.IsType<NoContentResult>(result);
         }
 
+        /// <summary>
+        ///      The following test checks if a phonebooks was created unsuccessfully.
+        /// </summary>        
         [Fact]
-        public async Task CreatePhonebook_Should_Fail_When_Phonebok_With_Same_Name_Already_Exists()
+        public async Task CreatePhonebook_Should_Fail_When_Create_Was_Unsuccessful()
         {
             // Arrange
             _phonebookServiceMock.Setup(x => x.CreatePhonebook(It.IsAny<Phonebook>())).ReturnsAsync(false);

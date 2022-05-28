@@ -7,27 +7,27 @@ using System.Threading.Tasks;
 namespace absa.phonebook.api.Sevices
 {
     /// <summary>
-    ///     Represents a phonebook service in the absa system.      
+    ///     Represents a entry service in the absa system.      
     /// </summary>
-    public interface IPhonebookService
+    public interface IEntryService
     {
         /// <summary>
-        ///     Provides a method that returns all phonebooks.
+        ///     Provides a method that returns all entries.
         /// </summary>
         /// <returns>
-        ///     A <see cref="List{Phonebook}"/> that represents all phonebooks.
+        ///     A <see cref="List{Entry}"/> that represents all entries.
         /// </returns>
-        public Task<List<Phonebook>> GetPhonebooks();
+        public Task<List<Entry>> GetAllEntries();
 
         /// <summary>
         ///     Provides a method that creates a new phonebook.
         /// </summary>
-        /// <param name="phonebook">
-        ///     A <see cref="Phonebook"/> that represents the phonebook to be created.
+        /// <param name="entry">
+        ///     A <see cref="Entry"/> that represents the entry to be created.
         /// </param>
         /// <returns>
         ///     a <see cref="bool"/> that represents whether the operation was a success or not.
         /// </returns>
-        public Task<bool> CreatePhonebook(Phonebook phonebook);                
+        public Task<bool> CreateEntry(Entry entry);
     }
 }

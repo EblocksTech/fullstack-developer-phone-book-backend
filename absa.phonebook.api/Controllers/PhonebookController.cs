@@ -25,7 +25,7 @@ namespace absa.phonebook.api.Controllers
         ///     Initialise a new instance of the <see cref="PhonebookController"/> class.
         /// </summary>
         /// <param name="phonebookService">
-        ///      A <see cref="IPhonebookService"/> representing the register service to be called.
+        ///      A <see cref="IPhonebookService"/> representing the service injected into controller.
         /// </param>
         public PhonebookController(IPhonebookService phonebookService)
         {
@@ -36,7 +36,9 @@ namespace absa.phonebook.api.Controllers
         /// <summary>
         ///     Retrieves then returns all of the phonebooks.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        ///     A <see cref="IActionResult"/> representing the result of the api call.
+        /// </returns>
         [HttpGet]
         [Route("/phonebooks")]
         public async Task<IActionResult> GetPhonebooks()
@@ -46,6 +48,15 @@ namespace absa.phonebook.api.Controllers
         }
 
 
+        /// <summary>
+        ///     Creates a new phonebook in the system.        
+        /// </summary>
+        /// <param name="dto">
+        ///     A <see cref="PhonebookDto"/> representing the phonebook to be created.
+        /// </param>
+        /// <returns>
+        ///     A <see cref="IActionResult"/> representing the result of the api call.
+        /// </returns>
         [HttpPost]
         [Route("/phonebooks")]
         public async Task<IActionResult> CreatePhonebook(PhonebookDto dto)

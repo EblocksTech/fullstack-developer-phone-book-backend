@@ -10,7 +10,7 @@ namespace absa.phonebook.api.Sevices
     public class PhonebookService : IPhonebookService
     {
         /// <inheritdoc/>
-        public Task<bool> CreatePhonebook(Phonebook phonebook)
+        public async Task<bool> CreatePhonebook(Phonebook phonebook)
         {
             throw new NotImplementedException();
         }
