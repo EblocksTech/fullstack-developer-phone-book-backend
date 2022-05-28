@@ -18,7 +18,7 @@ namespace absa.phonebook.api.Sevices
         /// <summary>
         ///      A <see cref="IPhonebookStore"/> representing the entry store to be called.
         /// </summary>
-        public IPhonebookStore _phonebookStore { get; }
+        private readonly IPhonebookStore _phonebookStore;
 
         /// <summary>
         ///     Initialise an  instance of the<see cref="EntryService"/> class.
@@ -42,8 +42,8 @@ namespace absa.phonebook.api.Sevices
             var entry = await _store.GetEntryByNumber(newEntry.Number);
 
             if (entry != null) return false;
-
-            return true;
+                 
+            return await _store.CreateEntry(newEntry);
         }
 
         /// <inheritdoc/>

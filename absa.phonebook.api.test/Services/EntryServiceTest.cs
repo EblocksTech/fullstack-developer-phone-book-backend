@@ -29,9 +29,11 @@ namespace absa.phonebook.api.test.Services
         ///     A <see cref="Mock"/> implementation of <see cref="IPhonebookStore"/> representing the store to be mocked.         
         /// </summary>
         private readonly Mock<IPhonebookStore> _phonebookStoreMock;
+
         /// <summary>
         ///     Initialise an  instance of the <see cref="EntryServiceTest"/>  class.
         /// </summary>
+        /// 
         public EntryServiceTest()
         {
             _entryStoreMock = new Mock<IEntryStore>();

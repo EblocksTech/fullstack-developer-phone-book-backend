@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using absa.phonebook.api.Data;
 using absa.phonebook.api.Sevices;
+using absa.phonebook.api.Stores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -40,6 +41,9 @@ namespace absa.phonebook.api
 
             services.AddDbContext<PhonebookContext>(options => options.UseNpgsql(connectionString));
             services.AddTransient<IPhonebookService, PhonebookService>();
+            services.AddTransient<IEntryService, EntryService>();
+            services.AddTransient<IPhonebookStore, PhonebookStore>();
+            services.AddTransient<IEntryStore, EntryStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
