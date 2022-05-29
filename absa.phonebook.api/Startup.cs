@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using absa.phonebook.api.Data;
 using absa.phonebook.api.Sevices;
 using absa.phonebook.api.Stores;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -20,6 +21,12 @@ namespace absa.phonebook.api
 {
     public class Startup
     {
+
+        /// <summary>
+        ///     Instatiating the <see cref="CORS_POLICY"/>
+        /// </summary>
+        private readonly string CORS_POLICY = "CorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,7 +38,17 @@ namespace absa.phonebook.api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: CORS_POLICY, builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
+            services.AddControllers().AddFluentValidation(fv =>
+                  fv.RegisterValidatorsFromAssemblyContaining<Startup>()); 
+            ;
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "absa.phonebook.api", Version = "v1" });
@@ -55,6 +72,8 @@ namespace absa.phonebook.api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "absa.phonebook.api v1"));
             }
+
+            app.UseCors(CORS_POLICY);
 
             app.UseHttpsRedirection();
 
