@@ -27,12 +27,15 @@ namespace absa.phonebook.api
         /// </summary>
         private readonly string CORS_POLICY = "CorsPolicy";
 
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _environment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -53,10 +56,19 @@ namespace absa.phonebook.api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "absa.phonebook.api", Version = "v1" });
             });
+            
 
-            var connectionString = Configuration["ConnectionStrings:Postgres"];
-
-            services.AddDbContext<PhonebookContext>(options => options.UseNpgsql(connectionString));
+            if (_environment.IsDevelopment())
+            {
+                var connectionString = Configuration["ConnectionStrings:Postgres"];
+                services.AddDbContext<PhonebookContext>(options => options.UseNpgsql(connectionString));
+            }
+            else
+            {
+                var connectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNSTR");                
+                services.AddDbContext<PhonebookContext>(options => options.UseNpgsql(connectionString));
+            }
+                       
             services.AddTransient<IPhonebookService, PhonebookService>();
             services.AddTransient<IEntryService, EntryService>();
             services.AddTransient<IPhonebookStore, PhonebookStore>();
